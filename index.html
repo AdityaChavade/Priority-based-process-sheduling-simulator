@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f5f7">
+  <title>Batch OS · Run viewer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Batch OS viewer home"><span class="brand-mark">B</span><span>batch<span class="brand-light">.os</span></span></a>
+    <div class="top-meta"><span class="live-dot"></span> LOCAL SIMULATOR <span class="top-divider">/</span> RUN VIEWER</div>
+    <a class="source-link" href="index.cpp" title="View the C++ source">C++ source <span>↗</span></a>
+  </header>
+
+  <main class="shell">
+    <section class="intro">
+      <div class="eyebrow">OPERATING SYSTEMS · VISUALIZER</div>
+      <h1>See what happens<br><span>when jobs run.</span></h1>
+      <p>Load a job deck to follow scheduling, instructions, simulated I/O and results, one event at a time.</p>
+    </section>
+
+    <section class="load-panel panel" aria-labelledby="load-title">
+      <div class="section-heading"><div><div class="eyebrow">01 / INPUT</div><h2 id="load-title">Load instruction file</h2></div><span class="format-pill">$AMJ · $DTA · $END</span></div>
+      <label class="dropzone" id="dropzone" for="file-input">
+        <input id="file-input" type="file" accept=".txt,.dat,.in,text/plain">
+        <span class="upload-icon">↑</span>
+        <span class="drop-title">Drop a job deck here, or <span>browse files</span></span>
+        <span class="drop-sub" id="file-name">Plain text · uses the simulator’s card format</span>
+      </label>
+      <div class="load-actions"><button class="button button-primary" id="run-button" disabled>Run simulation <span>→</span></button><button class="button button-quiet" id="sample-button">Sample: I/O jobs</button><button class="button button-quiet" id="preempt-sample-button">Sample: preemption</button><button class="button button-quiet" id="error-sample-button">Sample: error</button><span class="hint">Runs locally in your browser</span></div>
+      <details class="format-help"><summary>Input format and instruction reference</summary><p><code>$AMJ</code> begins a job; the following 14 digits are job ID (4), time limit (4), line limit (4), and priority (2). Lower priority numbers run first. Program lines contain four-character instructions. <code>$DTA</code> begins data lines and <code>$END</code> ends the job.</p><p><b>Instructions:</b> <code>LRnn</code> load a word, <code>SRnn</code> store the register, <code>CRnn</code> compare, <code>BTnn</code> branch if equal, <code>GDnn</code> read a data block, <code>PDnn</code> print a block, <code>H</code> halt.</p><p><b>Simulator note:</b> the browser uses a simplified virtual memory and simulated I/O model for teaching. It parses the same job deck, but does not execute the C++ kernel itself.</p></details>
+      <div class="error-message" id="error-message" role="alert" hidden></div>
+    </section>
+
+    <section id="workspace" hidden>
+      <div class="run-heading"><div><div class="eyebrow">02 / EXECUTION</div><h2>Simulation run</h2></div><div class="run-controls"><span class="run-summary" id="run-summary"></span><button class="button button-small" id="step-button">Next tick →</button><button class="button button-small" id="play-button">▶ Run</button><button class="button button-small" id="rerun-button">↻ Reset</button></div></div>
+      <div class="inspector-grid"><section class="panel inspector"><div class="panel-title"><div><span class="eyebrow">CPU SNAPSHOT</span><h3>Registers & current instruction</h3></div><span class="count-badge" id="cpu-job">IDLE</span></div><div id="cpu-view" class="cpu-view"></div></section><section class="panel inspector"><div class="panel-title"><div><span class="eyebrow">VIRTUAL MEMORY</span><h3>Selected job memory</h3></div><span class="log-count" id="memory-label">SELECT A JOB</span></div><div id="memory-view" class="memory-view"><div class="empty-state">Select a job to inspect its instruction and data words.</div></div></section></div>
+      <div class="dashboard">
+        <aside class="jobs-panel panel"><div class="panel-title"><div><span class="eyebrow">JOB TABLE</span><h3>Processes</h3></div><span class="count-badge" id="job-count">0</span></div><div id="job-list" class="job-list"></div></aside>
+        <div class="main-column">
+          <section class="panel log-panel"><div class="panel-title"><div><span class="eyebrow">KERNEL TRACE</span><h3>Execution log</h3></div><span class="log-count" id="log-count">0 EVENTS</span></div><div class="log-filters" id="log-filters"><button class="filter active" data-filter="all">All events</button><button class="filter" data-filter="cpu">CPU</button><button class="filter" data-filter="io">I/O</button><button class="filter" data-filter="state">State</button></div><div class="log-list" id="log-list" aria-live="polite"></div></section>
+          <section class="panel history-panel"><div class="panel-title"><div><span class="eyebrow">STATE TRANSITIONS</span><h3>Job history</h3></div><span class="log-count" id="history-count">ALL JOBS</span></div><div id="history-list" class="history-list"><div class="empty-state">State changes appear as the simulation advances.</div></div></section>
+          <section class="panel results-panel"><div class="panel-title"><div><span class="eyebrow">JOB OUTPUT</span><h3>Results</h3></div><span class="result-count" id="result-count">0 LINES</span></div><div id="results-list" class="results-list"><div class="empty-state">Printed lines and termination messages will appear here.</div></div></section>
+        </div>
+      </div>
+    </section>
+    <footer><span>Batch OS visualizer</span><span>Educational simulation · not a real operating system</span></footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

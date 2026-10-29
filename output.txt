@@ -1,0 +1,11 @@
+SI: 3 TI: 0 PI: 0
+IC: 5 TTC: 7 TTL: 20 LLC: 2 TLL: 10
+
+LOW_PRIORITY_DATA___                   
+LOW_PRIORITY_DATA___                   
+ALL GOOD                               
+SI: 3 TI: 0 PI: 0
+IC: 2 TTC: 4 TTL: 10 LLC: 1 TLL: 10
+
+HIGH_PRIORITY_DATA__                   
+ALL GOOD                               
